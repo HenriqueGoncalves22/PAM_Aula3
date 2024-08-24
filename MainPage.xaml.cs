@@ -30,6 +30,7 @@
         {
             TipPercentLabel.Text = TipSlider.Value.ToString("#.##") + "%";
 
+
         }
     }
 
