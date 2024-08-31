@@ -1,7 +1,12 @@
-﻿namespace TipCaculator
+﻿using System.Diagnostics;
+
+namespace TipCaculator
 {
     public partial class MainPage : ContentPage
     {
+        double valorTotal = 0;
+        double valorDaGorjeta = 0;
+        double valor = 0;
 
         public MainPage()
         {
@@ -20,15 +25,37 @@
         }
         private void RoundUpButton_Clicked(object sender, EventArgs e)
         {
-            
+            valorDaGorjeta = Math.Ceiling(valorDaGorjeta);
+            valorTotal = Math.Ceiling(valorTotal);
+
+            TipLabel.Text = valorDaGorjeta.ToString("C");
+            TotalLabel.Text = valorTotal.ToString("C");
         }
+
         private void RoundDownButton_Clicked(object sender, EventArgs e)
         {
+            valorDaGorjeta = Math.Floor(valorDaGorjeta);
+            valorTotal = Math.Floor(valorTotal);
 
+            TipLabel.Text = valorDaGorjeta.ToString("C");
+            TotalLabel.Text = valorTotal.ToString("C");
         }
         private void TipSlider_ValueChanged(object sender, ValueChangedEventArgs e)
         {
             TipPercentLabel.Text = TipSlider.Value.ToString("#.##") + "%";
+            try
+            {
+                valor = Convert.ToDouble(AmountEntry.Text);
+                valorDaGorjeta = valor * (TipSlider.Value / 100);
+                valorTotal = valorDaGorjeta + valor;
+
+                TotalLabel.Text = valorTotal.ToString("C");
+                TipLabel.Text = valorDaGorjeta.ToString("C");
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.ToString());
+            }
         }
 
         private void AmountEntry_TextChanged(object sender, TextChangedEventArgs e)
@@ -37,16 +64,22 @@
             //Calcular o valor da gorjeta de acordo com a porcentagem
             //Calcular o valor total, sendo a soma do valor + a gorjeta
 
-            double Valor = Convert.ToDouble(AmountEntry.Text);
-            double ValorDaGorjeta = Valor * (TipSlider.Value/100);
-            double ValorTotal = ValorDaGorjeta + Valor;
+            //Um bloco try catch para resolver as possiveis exceções causadas pelo input do usuário
+            try
+            {
+                valor = Convert.ToDouble(AmountEntry.Text);
+                valorDaGorjeta = valor * (TipSlider.Value / 100);
+                valorTotal = valorDaGorjeta + valor;
 
-            TotalLabel.Text = ValorTotal.ToString("C");
-            TipLabel.Text = ValorDaGorjeta.ToString("C");
-
-
+                TotalLabel.Text = valorTotal.ToString("C");
+                TipLabel.Text = valorDaGorjeta.ToString("C");
+            }
+            catch(Exception ex) {
+                Debug.WriteLine(ex.ToString()); 
+            }
 
         }
+
     }
 
 }

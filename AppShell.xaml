@@ -7,9 +7,16 @@
     Shell.FlyoutBehavior="Disabled"
     Title="TipCaculator">
 
+    <TabBar>
     <ShellContent
         Title=""
         ContentTemplate="{DataTemplate local:MainPage}"
         Route="MainPage" />
+
+        <ShellContent
+        Title="Sobre"
+        ContentTemplate="{DataTemplate local:AboutPage}"
+        Route="AboutPage" />
+    </TabBar>
 
 </Shell>
